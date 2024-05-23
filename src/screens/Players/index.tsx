@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { FlatList } from 'react-native';
+import { Alert, FlatList } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 
-import type { AppStackParamList } from '../../@types/navigation';
+import { deleteGroupOfStorage } from '@storage/group/deleteGroupOfStorage';
 
 import { Header } from '@components/Header';
 import { Highlight } from '@components/Highlight';
@@ -13,12 +13,14 @@ import { ButtonIcon } from '@components/ButtonIcon';
 import { PlayerInfo } from '@components/PlayerInfo';
 import { ListEmpty } from '@components/ListEmpty';
 
+import type { AppStackParamList } from '../../@types/navigation';
+
 import * as S from './styles';
 
 export function Players() {
-  const [selectedTeam, setSelectedTeam] = useState();
-  const [teams] = useState([]);
-  const [players] = useState([]);
+  const [selectedTeam, setSelectedTeam] = useState<string>('Time A');
+  const [teams] = useState<string[]>(['Time A', 'Time B']);
+  const [players] = useState<string[]>([]);
 
   const navigation = useNavigation();
   const route = useRoute();
@@ -27,6 +29,16 @@ export function Players() {
 
   function handleBackButtonAction() {
     navigation.navigate('groups');
+  }
+
+  async function deleteGroup(group: string) {
+    try {
+      await deleteGroupOfStorage({ deletedGroup: group });
+      navigation.navigate('groups');
+    } catch (error) {
+      Alert.alert('Remoção de turma', 'Não foi possivel remover a turma.')
+      console.log(error);      
+    }
   }
 
   return (
@@ -81,7 +93,7 @@ export function Players() {
         </S.ListOfPlayers>
       </S.Content>
 
-      <Button variation='SECONDARY'>Remover turma</Button>
+      <Button variation='SECONDARY' onPress={() => deleteGroup(group)} >Remover turma</Button>
     </S.Container>
   );
 }
