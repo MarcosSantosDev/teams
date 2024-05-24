@@ -2,15 +2,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { GROUPS_COLLECTION } from '../storageConfig'
 
-import { getAllGroupsOfStorage } from "./getAllGroupsOfStorage";
+import { getAllGroups } from "./getAllGroups";
 
-type DeleteGroupOfStorageParams = {
+type DeleteGroupParams = {
   deletedGroup: string;
 }
 
-export const deleteGroupOfStorage = async ({ deletedGroup }: DeleteGroupOfStorageParams) => {
+export const deleteGroup = async ({ deletedGroup }: DeleteGroupParams) => {
   try {
-    const allGroupsStored = await getAllGroupsOfStorage();
+    const allGroupsStored = await getAllGroups();
 
     const storage = allGroupsStored.filter(group => group !== deletedGroup);
     const updatedStorage = JSON.stringify(storage);

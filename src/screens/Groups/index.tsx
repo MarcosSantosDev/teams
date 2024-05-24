@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { FlatList } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
-import { getAllGroupsOfStorage } from '@storage/group/getAllGroupsOfStorage';
+import { getAllGroups } from '@storage/groups/getAllGroups';
 
 import { Header } from '@components/Header';
 import { Highlight } from '@components/Highlight';
@@ -26,7 +26,7 @@ export function Groups() {
   }
 
   async function fetchAllGroups() {
-    const allGroups = await getAllGroupsOfStorage();
+    const allGroups = await getAllGroups();
     setGroups(allGroups);
   }
 

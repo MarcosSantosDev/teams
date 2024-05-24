@@ -3,15 +3,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GROUPS_COLLECTION } from '@storage/storageConfig'
 import { AppError } from '@utils/AppError'
 
-import { getAllGroupsOfStorage } from './getAllGroupsOfStorage';
+import { getAllGroups } from './getAllGroups';
 
-type AddNewGroupToStorageParams = {
+type CreateNewGroupParams = {
   newGroup: string;
 }
 
-export const addNewGroupToStorage = async ({ newGroup }: AddNewGroupToStorageParams) => {
+export const createNewGroup = async ({ newGroup }: CreateNewGroupParams) => {
   try {
-    const storedGroups = await getAllGroupsOfStorage();
+    const storedGroups = await getAllGroups();
 
     const groupAlreadyExists = storedGroups.filter(group => group === newGroup);
 

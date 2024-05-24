@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { Alert, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { addNewGroupToStorage } from '@storage/group/addNewGroupToStorage';
+import { createNewGroup } from '@storage/groups/createNewGroup';
 
 import { AppError } from '@utils/AppError';
 
@@ -28,7 +28,7 @@ export function NewGroup() {
 
   async function handleSubmit() {
     try {
-      await addNewGroupToStorage({ newGroup: group })
+      await createNewGroup({ newGroup: group })
       
       newGroupInputRef.current?.blur();
       

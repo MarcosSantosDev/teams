@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Alert, FlatList } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 
-import { deleteGroupOfStorage } from '@storage/group/deleteGroupOfStorage';
+import { deleteGroup } from '@storage/groups/deleteGroup';
 
 import { Header } from '@components/Header';
 import { Highlight } from '@components/Highlight';
@@ -31,9 +31,9 @@ export function Players() {
     navigation.navigate('groups');
   }
 
-  async function deleteGroup(group: string) {
+  async function handleDeleteGroup(group: string) {
     try {
-      await deleteGroupOfStorage({ deletedGroup: group });
+      await deleteGroup({ deletedGroup: group });
       navigation.navigate('groups');
     } catch (error) {
       Alert.alert('Remoção de turma', 'Não foi possivel remover a turma.')
@@ -93,7 +93,7 @@ export function Players() {
         </S.ListOfPlayers>
       </S.Content>
 
-      <Button variation='SECONDARY' onPress={() => deleteGroup(group)} >Remover turma</Button>
+      <Button variation='SECONDARY' onPress={() => handleDeleteGroup(group)} >Remover turma</Button>
     </S.Container>
   );
 }
