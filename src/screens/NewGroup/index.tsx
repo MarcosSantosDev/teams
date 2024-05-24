@@ -2,19 +2,17 @@ import { useState, useRef } from 'react';
 import { Alert, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { createNewGroup } from '@storage/groups/createNewGroup';
-
 import { AppError } from '@utils/AppError';
+import { createNewGroup } from '@storage/groups/createNewGroup';
 
 import { Header } from '@components/Header';
 import { Highlight } from '@components/Highlight';
 import { Button } from '@components/Button';
 import { Input } from '@components/Input';
 
-
 import * as S from './styles';
 
-export function NewGroup() {
+const useNewGroup = () => {
   const navigation = useNavigation();
   
   const [group, setGroup] = useState('')
@@ -39,6 +37,24 @@ export function NewGroup() {
       return Alert.alert('Nova Turma', 'Não foi possível criar uma nova turma.');
     }
   }
+
+  return {
+    newGroupInputRef,
+    group,
+    setGroup,
+    handleSubmit,
+    handleBackButtonAction
+  }
+} 
+
+export function NewGroup() {
+  const {
+    newGroupInputRef,
+    group,
+    setGroup,
+    handleSubmit,
+    handleBackButtonAction
+  } = useNewGroup();
 
   return (
     <S.Container>

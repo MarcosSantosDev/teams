@@ -13,10 +13,10 @@ import { Button } from '@components/Button';
 import * as S from './styles';
 import { AppError } from '@utils/AppError';
 
-export function Groups() {
-  const [groups, setGroups] = useState<string[]>([]);
-
+const useGroups = () => {
   const navigation = useNavigation();
+  
+  const [groups, setGroups] = useState<string[]>([]);
 
   function handleNavigateToNewGroup() {
     navigation.navigate('new');
@@ -43,6 +43,20 @@ export function Groups() {
       fetchAllGroups()
     }, [])
   )
+
+  return {
+    groups,
+    handleNavigateToNewGroup,
+    handleNavigateToPlayers
+  }
+}
+
+export function Groups() {
+  const {
+    groups,
+    handleNavigateToNewGroup,
+    handleNavigateToPlayers
+  } = useGroups();
 
   return (
     <S.Container>

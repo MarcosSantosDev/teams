@@ -26,7 +26,7 @@ import type { AppStackParamList } from "../../@types/navigation";
 import * as S from "./styles";
 import { deletePlayerByGroup } from "@storage/players/deletePlayer";
 
-export function Players() {
+const usePlayers = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
@@ -110,6 +110,39 @@ export function Players() {
     }, [])
   );
 
+  return {
+    newPlayerInputRef,
+    newPlayerInputValue,
+    group,
+    teams,
+    selectedTeam,
+    players,
+    playersByTeam,
+    setNewPlayerInputValue,
+    setSelectedTeam,
+    handleBackButtonAction,
+    handleDeleteGroup,
+    handleCreateNewPlayer,
+    handleDeletePlayer
+  }
+}
+
+export function Players() {
+  const {
+    newPlayerInputRef,
+    newPlayerInputValue,
+    group,
+    teams,
+    selectedTeam,
+    playersByTeam,
+    setNewPlayerInputValue,
+    setSelectedTeam,
+    handleBackButtonAction,
+    handleDeleteGroup,
+    handleCreateNewPlayer,
+    handleDeletePlayer
+  } = usePlayers();
+
   return (
     <S.Container>
       <Header showBackButton onBackButtonAction={handleBackButtonAction} />
@@ -164,7 +197,7 @@ export function Players() {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={[
               { gap: 16 },
-              players.length === 0 && { flex: 1 },
+              playersByTeam.length === 0 && { flex: 1 },
             ]}
             ListEmptyComponent={
               <ListEmpty message="Não há pessoas neste time." />
