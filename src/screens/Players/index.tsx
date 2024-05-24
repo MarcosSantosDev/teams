@@ -40,9 +40,7 @@ const usePlayers = () => {
   const { group } = route.params as AppStackParamList["players"];
 
   const playersByTeam = useMemo(() => {
-    return players.filter(
-      (player) => player.team === selectedTeam
-    )
+    return players.filter((player) => player.team === selectedTeam);
   }, [players, selectedTeam]);
 
   async function fetchPlayers() {
@@ -54,7 +52,7 @@ const usePlayers = () => {
     navigation.navigate("groups");
   }
 
-  async function handleDeleteGroup() {
+  async function executeDeleteGroup() {
     try {
       await deleteGroup({ group });
       navigation.navigate("groups");
@@ -64,6 +62,22 @@ const usePlayers = () => {
       }
       return Alert.alert("Remover turma", "Não foi possivel remover a turma.");
     }
+  }
+
+  function handleDeleteGroup() {
+    Alert.alert(
+      "Remover turma",
+      `Deseja remover o grupo: ${group} ?`,
+      [
+        { text: "Cancelar" },
+        {
+          text: "Sim, desejo remover",
+          onPress: () => {
+            executeDeleteGroup();
+          }
+        },
+      ]
+    );
   }
 
   async function handleCreateNewPlayer() {
@@ -89,7 +103,7 @@ const usePlayers = () => {
     }
   }
 
-  async function handleDeletePlayer(deletedPlayer: string) {
+  async function executeDeletePlayer(deletedPlayer: string) {
     try {
       await deletePlayerByGroup({ group, deletedPlayer });
       await fetchPlayers();
@@ -102,6 +116,22 @@ const usePlayers = () => {
         "Não foi possivel remover o participante."
       );
     }
+  }
+
+  function handleDeletePlayer(deletedPlayer: string) {
+    Alert.alert(
+      "Remover turma",
+      `Deseja remover o participante: ${deletedPlayer} ?`,
+      [
+        { text: "Cancelar" },
+        {
+          text: "Sim, desejo remover",
+          onPress: () => {
+            executeDeletePlayer(deletedPlayer);
+          }
+        },
+      ]
+    );
   }
 
   useFocusEffect(
@@ -123,9 +153,9 @@ const usePlayers = () => {
     handleBackButtonAction,
     handleDeleteGroup,
     handleCreateNewPlayer,
-    handleDeletePlayer
-  }
-}
+    handleDeletePlayer,
+  };
+};
 
 export function Players() {
   const {
@@ -140,7 +170,7 @@ export function Players() {
     handleBackButtonAction,
     handleDeleteGroup,
     handleCreateNewPlayer,
-    handleDeletePlayer
+    handleDeletePlayer,
   } = usePlayers();
 
   return (
