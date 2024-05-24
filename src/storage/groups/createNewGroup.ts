@@ -22,6 +22,7 @@ export const createNewGroup = async ({ newGroup }: CreateNewGroupParams) => {
       await AsyncStorage.setItem(GROUPS_COLLECTION, storage);
     }
   } catch (error) {
+    console.log(error);
     throw error;
   }
 }

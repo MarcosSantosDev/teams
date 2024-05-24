@@ -8,6 +8,7 @@ export const getAllGroups = async () => {
     const groups: string[] = storage ? JSON.parse(storage) : [];
     return groups;
   } catch (error) {
-    throw error
+    console.log(error);
+    throw error;
   }
 }

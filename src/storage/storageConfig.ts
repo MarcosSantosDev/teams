@@ -1,5 +1,6 @@
 const APP_PREFIX = '@teams';
 
 const GROUPS_COLLECTION = `${APP_PREFIX}:groups`;
+const PLAYERS_COLLECTION = `${APP_PREFIX}:players`;
 
-export { GROUPS_COLLECTION }
+export { GROUPS_COLLECTION, PLAYERS_COLLECTION }

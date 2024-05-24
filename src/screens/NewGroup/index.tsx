@@ -29,17 +29,14 @@ export function NewGroup() {
   async function handleSubmit() {
     try {
       await createNewGroup({ newGroup: group })
-      
-      newGroupInputRef.current?.blur();
-      
       setGroup('');
+      newGroupInputRef.current?.blur();
       navigation.navigate('players', { group });
     } catch (error) {
       if (error instanceof AppError) {
-        Alert.alert('Nova Turma', error.message);
+        return Alert.alert('Nova Turma', error.message);
       }
-      Alert.alert('Nova Turma', 'Não foi possível criar uma nova turma.');
-      console.log(error);
+      return Alert.alert('Nova Turma', 'Não foi possível criar uma nova turma.');
     }
   }
 

@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { FlatList } from 'react-native';
+import { Alert, FlatList } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import { getAllGroups } from '@storage/groups/getAllGroups';
@@ -11,6 +11,7 @@ import { ListEmpty } from '@components/ListEmpty';
 import { Button } from '@components/Button';
 
 import * as S from './styles';
+import { AppError } from '@utils/AppError';
 
 export function Groups() {
   const [groups, setGroups] = useState<string[]>([]);
@@ -26,8 +27,15 @@ export function Groups() {
   }
 
   async function fetchAllGroups() {
-    const allGroups = await getAllGroups();
-    setGroups(allGroups);
+    try {      
+      const allGroups = await getAllGroups();
+      setGroups(allGroups);
+    } catch (error) {
+      if (error instanceof AppError) {
+        return Alert.alert('Busca de turmas', error.message);
+      }
+      return Alert.alert('Busca de turmas', 'Não foi possivel carregar as turmas.')
+    }
   }
 
   useFocusEffect(

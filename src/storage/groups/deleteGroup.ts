@@ -5,18 +5,18 @@ import { GROUPS_COLLECTION } from '../storageConfig'
 import { getAllGroups } from "./getAllGroups";
 
 type DeleteGroupParams = {
-  deletedGroup: string;
+  group: string;
 }
 
-export const deleteGroup = async ({ deletedGroup }: DeleteGroupParams) => {
+export const deleteGroup = async (deletedGroup: DeleteGroupParams) => {
   try {
     const allGroupsStored = await getAllGroups();
 
-    const storage = allGroupsStored.filter(group => group !== deletedGroup);
+    const storage = allGroupsStored.filter(group => group !== deletedGroup.group);
     const updatedStorage = JSON.stringify(storage);
-
-    await AsyncStorage.setItem(GROUPS_COLLECTION, updatedStorage);    
+    await AsyncStorage.setItem(GROUPS_COLLECTION, updatedStorage);
   } catch (error) {
-    throw error
+    console.log(error);
+    throw error;
   }
 }
