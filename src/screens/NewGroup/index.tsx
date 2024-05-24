@@ -26,6 +26,10 @@ const useNewGroup = () => {
 
   async function handleSubmit() {
     try {
+      if (group.trim().length === 0) {
+       return Alert.alert( "Nova turma", "Informe o nome da turma para adicionar !");  
+      }
+
       await createNewGroup({ newGroup: group })
       setGroup('');
       newGroupInputRef.current?.blur();
@@ -73,8 +77,10 @@ export function NewGroup() {
         <Input
           inputRef={newGroupInputRef}
           value={group}
-          onChangeText={setGroup}
           placeholder='Nome da turma'
+          onChangeText={setGroup}
+          onSubmitEditing={handleSubmit}
+          returnKeyType='done'
         />
 
         <Button onPress={handleSubmit}>Criar</Button>

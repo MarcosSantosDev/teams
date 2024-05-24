@@ -48,40 +48,12 @@ const usePlayers = () => {
     setPlayers(playersStored);
   }
 
-  function handleBackButtonAction() {
-    navigation.navigate("groups");
-  }
-
-  async function executeDeleteGroup() {
-    try {
-      await deleteGroup({ group });
-      navigation.navigate("groups");
-    } catch (error) {
-      if (error instanceof AppError) {
-        return Alert.alert("Remover turma", error.message);
-      }
-      return Alert.alert("Remover turma", "Não foi possivel remover a turma.");
-    }
-  }
-
-  function handleDeleteGroup() {
-    Alert.alert(
-      "Remover turma",
-      `Deseja remover o grupo: ${group} ?`,
-      [
-        { text: "Cancelar" },
-        {
-          text: "Sim, desejo remover",
-          onPress: () => {
-            executeDeleteGroup();
-          }
-        },
-      ]
-    );
-  }
-
   async function handleCreateNewPlayer() {
     try {
+      if (newPlayerInputValue.trim().length === 0) {
+        return Alert.alert( "Novo participante", "Informe o nome do participante para adicionar !");  
+      }
+
       await createNewPlayerByGroup({
         group,
         newPlayer: {
@@ -94,10 +66,10 @@ const usePlayers = () => {
       await fetchPlayers();
     } catch (error) {
       if (error instanceof AppError) {
-        return Alert.alert("Criar participante", error.message);
+        return Alert.alert("Novo participante", error.message);
       }
       return Alert.alert(
-        "Criar participante",
+        "Novo participante",
         "Não foi possivel criar o participante."
       );
     }
@@ -123,7 +95,7 @@ const usePlayers = () => {
       "Remover turma",
       `Deseja remover o participante: ${deletedPlayer} ?`,
       [
-        { text: "Cancelar" },
+        { text: "Não" },
         {
           text: "Sim, desejo remover",
           onPress: () => {
@@ -132,6 +104,42 @@ const usePlayers = () => {
         },
       ]
     );
+  }
+
+  function handleBackButtonAction() {
+    navigation.navigate("groups");
+  }
+
+  async function executeDeleteGroup() {
+    try {
+      await deleteGroup({ group });
+      navigation.navigate("groups");
+    } catch (error) {
+      if (error instanceof AppError) {
+        return Alert.alert("Remover turma", error.message);
+      }
+      return Alert.alert("Remover turma", "Não foi possivel remover a turma.");
+    }
+  }
+
+  function handleDeleteGroup() {
+    if (players.length) {
+      Alert.alert("Remover turma", "Há times com participante(s), remova-os para remover a turma !");
+    } else {
+      Alert.alert(
+        "Remover turma",
+        `Deseja remover o grupo: ${group} ?`,
+        [
+          { text: "Não" },
+          {
+            text: "Sim, desejo remover",
+            onPress: () => {
+              executeDeleteGroup();
+            }
+          },
+        ]
+      );
+    }
   }
 
   useFocusEffect(
@@ -185,9 +193,12 @@ export function Players() {
         <S.ContentInputIcon>
           <Input
             inputRef={newPlayerInputRef}
+            placeholder="Nome do participante"
+            autoCorrect={false}
             value={newPlayerInputValue}
             onChangeText={setNewPlayerInputValue}
-            placeholder="Nome do participante"
+            onSubmitEditing={() => handleCreateNewPlayer()}
+            returnKeyType="done"
           />
           <ButtonIcon name="add" onPress={() => handleCreateNewPlayer()} />
         </S.ContentInputIcon>
